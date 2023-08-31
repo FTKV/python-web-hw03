@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "bot-assistant"
+version = "0.1.0"
+description = "Personal assistant"
+authors = ["HeavyDevs"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+platformdirs = "3.10.0"
+rich = "13.5.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+bot-assistant = "bot_assistant.main:main_func"
