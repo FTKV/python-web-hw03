@@ -1,5 +1,5 @@
 import pathlib
-from .sort_functions import define_data, print_data, rename_duplicates, rm_empty_dirs, sort_data
+from .sort_functions import define_data, print_data, rm_empty_dirs, rename_duplicates, create_folders, change_paths, replace_files
 
 
 TEXT_COLOR = {
@@ -18,6 +18,8 @@ def sort_main_func(inp_path):
     
     defined_files = define_data(path)
     updated_files = rename_duplicates(defined_files)
+    updated_files = change_paths(path, updated_files)
     print_data(updated_files)
-    sort_data(path, defined_files, updated_files)
+    create_folders(path, defined_files)
+    replace_files(defined_files, updated_files)
     rm_empty_dirs(path)

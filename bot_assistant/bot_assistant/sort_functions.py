@@ -106,24 +106,41 @@ def rename_duplicates(defined_files):
     return updated_files
 
 
+def create_folders(path, defined_files):
+    for key in defined_files:
+        subpath = path.joinpath(key)
+        if not subpath.is_dir():
+            subpath.mkdir()
+
+
+def change_paths(path, updated_files):
+    if not updated_files:
+        return
+    
+    temp = deepcopy(updated_files)
+    for key in temp:
+        subpath = path.joinpath(key)
+        for i, file in enumerate(temp[key]):
+            temp[key].pop(i)
+            temp[key].insert(i, subpath.joinpath(file.name))
+    return temp
+
+
 def replace(old_path, new_path):
     old_path.replace(new_path)
     logging.debug(f'Done {new_path.name}')
 
 
-def sort_data(path, defined_files, updated_files):
+def replace_files(defined_files, updated_files):
     if not defined_files:
         return
     
     logging.basicConfig(level=logging.DEBUG, format='%(threadName)s %(message)s')
 
     for key in defined_files:
-        subpath = path.joinpath(key)
-        if not subpath.is_dir():
-            subpath.mkdir()
         threads = []
         for i, file in enumerate(defined_files[key]):
-            thread = Thread(target=replace, args=(file, subpath.joinpath(updated_files[key][i].name)))
+            thread = Thread(target=replace, args=(file, updated_files[key][i]))
             thread.start()
             threads.append(thread)
         [el.join() for el in threads]
